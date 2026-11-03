@@ -6,7 +6,13 @@
 
 An end-to-end NLP text classification system that detects whether an incoming message is **phishing** or **legitimate**, explains its prediction via additive per-feature log-odds contributions, supports live decision-threshold tuning based on an explicit operational policy, and enhances detection robustness through a multi-strategy generative and adversarial **Data Augmentation Engine** (`PhishAugmenter`) alongside the real **UCI SMS Spam Collection**.
 
-> ℹ️ **Notice:** *This tool supports a human decision and does not block messages by itself. The benchmark training data uses fictional brands.*
+---
+
+### 🌐 Liens du Projet
+* **Application Web en Ligne :** [https://phish-or-legit-lab04-mg7z3rnjygtzbgfxhoyslj.streamlit.app/](https://phish-or-legit-lab04-mg7z3rnjygtzbgfxhoyslj.streamlit.app/)
+* **Dépôt GitHub :** [https://github.com/loubnamahrach/phish-or-legit-lab04](https://github.com/loubnamahrach/phish-or-legit-lab04)
+
+> ℹ️ **Notice :** *Cet outil est un support à la décision humaine et ne bloque pas les messages de manière autonome. Les données d'entraînement utilisent des marques fictives.*
 
 ---
 
@@ -77,19 +83,15 @@ Evaluated on the untouched **500 holdout test messages** at decision threshold $
 │   ├── evaluate.py             # Benchmark script (calibration, curves, metrics.json)
 │   ├── augmentation.py         # Markov LM, Hard-Example Miner, Adversarial Obfuscator
 │   └── take_screenshots.py    # Automated headless CDP screenshot generator
-├── results/
-│   ├── metrics.json            # Machine-readable test metrics and confusion matrices
-│   ├── run_log.txt             # Full evaluation logs across all models
-│   ├── failures.txt            # Analysis of false negatives and false positives
-│   ├── phish_results.png       # Confusion matrix & reliability diagrams
-│   ├── augmentation_comparison.png # Precision/Recall curves & Data Augmentation impact
-│   ├── app_screenshot_1_classify.png # Screenshot of interactive classifier
-│   ├── app_screenshot_2_evaluation.png # Screenshot of threshold & calibration curves
-│   └── app_screenshot_3_augmentation.png # Screenshot of data augmentation engine
-└── report/
-    ├── Lab04_Report.pdf        # One-Page technical report (PDF) ready for hand-in
-    ├── Lab04_Report.html       # Source HTML template for the 1-page report
-    └── Lab04_Report.md         # Markdown version of the report
+└── results/
+    ├── metrics.json            # Machine-readable test metrics and confusion matrices
+    ├── run_log.txt             # Full evaluation logs across all models
+    ├── failures.txt            # Analysis of false negatives and false positives
+    ├── phish_results.png       # Confusion matrix & reliability diagrams
+    ├── augmentation_comparison.png # Precision/Recall curves & Data Augmentation impact
+    ├── app_screenshot_1_classify.png # Screenshot of interactive classifier
+    ├── app_screenshot_2_evaluation.png # Screenshot of threshold & calibration curves
+    └── app_screenshot_3_augmentation.png # Screenshot of data augmentation engine
 ```
 
 ---
@@ -101,8 +103,8 @@ Ensure Python 3.10+ is installed on your machine.
 
 ### 2. Clone the Repository & Install Dependencies
 ```bash
-git clone <YOUR_GITHUB_REPO_URL>
-cd 04_phish_or_legit
+git clone https://github.com/loubnamahrach/phish-or-legit-lab04.git
+cd phish-or-legit-lab04
 pip install -r requirements.txt
 ```
 
@@ -120,13 +122,10 @@ Open your browser at `http://localhost:8501`.
 
 ---
 
-## 🌐 How to Deploy to Streamlit Community Cloud (Public URL)
+## 🌐 Déploiement Public
 
-1. Push this folder to a GitHub repository (e.g. `github.com/<username>/phish-or-legit-lab04`).
-2. Go to [share.streamlit.io](https://share.streamlit.io/) and sign in with GitHub.
-3. Click **New app**.
-4. Select your repository, set the branch (e.g. `main`), and set the main file path to `04_phish_or_legit/app.py` (or `app.py` if the repository root is the lab folder).
-5. Click **Deploy!** Streamlit will automatically install dependencies from `requirements.txt` and provide a public URL (e.g., `https://phish-or-legit.streamlit.app`).
+L'application est déployée en production et accessible publiquement sur Streamlit Community Cloud :
+* **URL de l'application :** [https://phish-or-legit-lab04-mg7z3rnjygtzbgfxhoyslj.streamlit.app/](https://phish-or-legit-lab04-mg7z3rnjygtzbgfxhoyslj.streamlit.app/)
 
 ---
 
