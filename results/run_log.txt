@@ -1,0 +1,53 @@
+train = 1500 messages (20.0% phish) | test = 500 messages (20.0% phish)
+Majority-class baseline accuracy (always 'legit'): 80.0%  <- why accuracy alone is misleading
+
+=== 1. Baseline Evaluation on Standard Test Split (500 messages, threshold=0.5) ===
+model                                   precision  recall    F1   accuracy  Brier   ECE
+Naive Bayes                                0.611    0.800  0.693    0.858   0.104  0.089
+Logistic Regression                        0.747    0.710  0.728    0.894   0.071  0.035
+NB + calibration                           0.694    0.750  0.721    0.884   0.086  0.030
+LR + char n-grams (extension)              0.777    0.730  0.753    0.904   0.064  0.050
+
+=== 2. Data Augmentation Evaluation (Train expanded 1500 -> 2474 msgs, tested on same 500 holdout) ===
+model                                   precision  recall    F1   accuracy  Brier   ECE
+LR + Data Aug (Word+Char)                  0.765    0.750  0.758    0.904   0.066  0.027
+LR + Data Aug + URL-Aware                  0.833    0.800  0.816    0.928   0.056  0.038
+
+=== 3. Adversarial Robustness Benchmark (Obfuscated Phishing Test Set) ===
+model                                   precision  recall    F1   accuracy  Brier
+Logistic Regression                        0.718    0.610  0.659    0.874   0.087
+LR + char n-grams (extension)              0.750    0.630  0.685    0.884   0.078
+LR + Data Aug (Word+Char)                  0.770    0.770  0.770    0.908   0.064
+LR + Data Aug + URL-Aware                  0.832    0.790  0.810    0.926   0.059
+
+=== 4. External Real Dataset Benchmark: UCI SMS Spam (5574 real messages) ===
+model                                   precision  recall    F1   accuracy  Brier
+UCI Naive Bayes                            0.989    0.930  0.959    0.989   0.010
+UCI Logistic Regression                    0.989    0.920  0.953    0.988   0.012
+UCI LR + char_wb + Data Aug                0.989    0.952  0.970    0.992   0.008
+
+Confusion matrix (Logistic Regression)   rows = truth, columns = prediction (legit, phish)
+[[376  24]
+ [ 29  71]]
+
+Decision threshold trade-off (Logistic Regression):
+  threshold 0.2 : precision 0.604  recall 0.930  F1 0.732
+  threshold 0.35: precision 0.672  recall 0.800  F1 0.731
+  threshold 0.5 : precision 0.747  recall 0.710  F1 0.728
+  threshold 0.65: precision 0.846  recall 0.550  F1 0.667
+  threshold 0.7 : precision 0.893  recall 0.500  F1 0.641
+  threshold 0.9 : precision 1.000  recall 0.090  F1 0.165
+
+Strongest 'phish' features: [('urltok', 4.83), ('immediately', 3.98), ('notice', 3.6), ('immediately urltok', 3.17), ('alert', 2.82), ('can urltok', 2.81)]
+Strongest 'legit' features: [('reminder', -2.77), ('hey', -2.52), ('numtok', -2.28), ('fyi', -2.01), ('order', -1.63), ('order numtok', -1.63)]
+
+False negatives (phish predicted legit): 29
+  score=0.13 | Dear customer, A payment of $7.67 is pending. You can manage this in the app settings. https://vg9ys-login.info/aqjv  [features: dear:+0.51, urltok:+0.47, customer:+0.46, dear customer:+0.46, pending you:+0.20]
+  score=0.33 | Notice: Your parcel from BlueFright has an update. You can manage this in the app settings. Immediately. http://tinyurl.com/e5z8d70  [features: immediately:+0.74, immediately urltok:+0.67, notice:+0.55, urltok:+0.44, notice your:+0.20]
+  score=0.25 | ALERT: ParcelGo: your package is waiting. http://tinyurl.com/p7s5e1b Thanks  [features: alert:+1.01, urltok:+0.62, waiting urltok:-0.33, urltok thanks:+0.20, thanks:-0.20]
+  score=0.19 | Your Civic Savings account has a new notice. http://bit.ly/tp99jp  [features: notice:+0.80, urltok:+0.65, notice urltok:+0.17, has:-0.14, account has:-0.11]
+False positives (legit predicted phish): 24
+  score=0.57 | Hello, BlueFreight could not deliver your package today. Please reply as soon as you can.  [features: as:+0.64, reply:+0.35, please:+0.25, please reply:+0.25, reply as:+0.25]
+  score=0.61 | Northban: there is a message about your account. Log in to confirm. https://docs.example.com/d/7estf1  [features: confirm urltok:+0.59, confirm:+0.54, urltok:+0.54, in to:+0.29, log:+0.29]
+  score=0.52 | Your invoice of $21.12 is ready. Update your payment info. https://docs.example.com/d/k5isac  [features: urltok:+0.53, update your:+0.28, info:+0.26, payment info:+0.26, your payment:+0.26]
+  score=0.55 | SwiftPost could not deliver your package today. This is your final notice. https://www.example.com/orders/8777  [features: notice:+0.61, urltok:+0.49, final:+0.34, final notice:+0.34, your final:+0.34]
